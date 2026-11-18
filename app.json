@@ -8,6 +8,12 @@
     "scheme": "entrena",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0D0E10",
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7b5f7219-15e5-46e8-8c41-dfb7ba9be23b"
+    },
     "ios": {
       "bundleIdentifier": "com.oriol.entrena"
     },

@@ -1,0 +1,6 @@
+# Salts de línia LF a tot arreu, també a Windows (que té core.autocrlf=true).
+# Per què: l'empremta d'EAS Update (runtimeVersion "fingerprint") inclou fitxers de
+# text com .gitignore. Si l'APK (fet des d'aquest PC) i l'actualització (feta a GitHub,
+# Linux) veuen salts de línia diferents, les empremtes no coincideixen i les
+# actualitzacions no arriben mai al mòbil.
+* text=auto eol=lf

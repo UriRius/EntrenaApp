@@ -1,0 +1,47 @@
+# Cada push a master: comprova el codi i, si tot passa, publica una actualització
+# (EAS Update) que l'app del mòbil baixa sola. Com funciona: README.md › Actualitzacions.
+name: Publica actualització
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch: # botó «Run workflow» a GitHub › Actions, per republicar a mà
+
+concurrency:
+  group: eas-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # Filtre: una migració trencada arribaria directament al telèfon.
+      - name: Comprova (typecheck + lint + tests)
+        run: npm run check
+
+      - name: Falta el token d'Expo
+        if: env.EXPO_TOKEN == ''
+        run: echo "::warning::Falta el secret EXPO_TOKEN. El codi és correcte, però no s'ha publicat cap actualització."
+
+      - name: Publica l'actualització
+        if: env.EXPO_TOKEN != ''
+        run: >-
+          npx --yes eas-cli@latest update
+          --channel production
+          --environment production
+          --platform android
+          --message "$(git log -1 --pretty=%s)"
+          --non-interactive

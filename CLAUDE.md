@@ -23,7 +23,8 @@ cada exercici manté el vincle amb els músculs del catàleg.
 | Temporitzador | `expo-notifications` (notificació local programada) + `expo-haptics` |
 | Gràfics | SVG propi (`src/ui/LineChart.tsx`) amb `react-native-svg` |
 | Icones | `@expo/vector-icons` (Ionicons) |
-| APK | EAS Build, perfil `apk` (`eas.json`) |
+| APK | EAS Build, perfil `apk` (`eas.json`), canal `production` |
+| Actualitzacions | EAS Update (`expo-updates`), `runtimeVersion: fingerprint`; les publica GitHub Actions (`.github/workflows/update.yml`) a cada push a `master` |
 
 ## Estructura
 ```
@@ -60,6 +61,14 @@ scripts/        fetch-catalog.mjs
   (nivells) els llegeixi.
 - **Diàlegs**: `confirm`/`inform` de `src/ui/dialogs.ts`, mai `Alert` directe (a web no
   es mostra i les proves visuals es fan al navegador).
+- **Push a `master` = actualització al mòbil.** GitHub passa `npm run check` i publica
+  amb EAS Update: no hi ha cap revisió entremig. Una migració trencada arriba directa
+  al telèfon de l'Oriol.
+- **Canvi natiu → APK nou.** Llibreria nativa, permisos, plugins o icones a `app.json`,
+  o pujar d'SDK canvien l'empremta (`fingerprint`). Les actualitzacions ja no arriben a
+  l'APK vell (és intencionat: no el trenquen), però cal dir-li a l'Oriol que en faci un.
+- **Salts de línia LF** (`.gitattributes`). L'empremta inclou `.gitignore`; amb CRLF al PC
+  i LF a GitHub, les empremtes no coincidirien i no arribaria cap actualització.
 
 ## Verificar
 - `npm run check` (typecheck + lint + tests) abans de donar res per fet.
