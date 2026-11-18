@@ -1,56 +1,41 @@
-# Welcome to your Expo app 👋
+# Entrena
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App personal de gimnàs per a Android: rutines, sèries (pes i repeticions), GIF de cada
+exercici, temporitzador de descans, progrés i estadístiques. Les dades viuen només al
+telèfon (SQLite); no hi ha servidor ni comptes.
 
-## Get started
+Què fa i per què: [BRIEF.md](BRIEF.md). Regles per treballar-hi: [CLAUDE.md](CLAUDE.md).
 
-1. Install dependencies
+## Provar-la al mòbil (sense compilar res)
 
-   ```bash
-   npm install
-   ```
+1. Instal·la **Expo Go** des de la Play Store.
+2. A l'ordinador: `npm install` (només la primera vegada) i `npx expo start`.
+3. Escaneja el codi QR amb Expo Go (mòbil i ordinador a la mateixa wifi).
 
-2. Start the app
+## Fer l'APK (gratis, al núvol d'Expo)
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Només la primera vegada:
 
 ```bash
-npm run reset-project
+npx eas-cli@latest login        # compte gratuït a expo.dev
+npx eas-cli@latest init         # vincula el projecte al teu compte
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Cada vegada que vulguis un APK nou:
 
-### Other setup steps
+```bash
+npx eas-cli@latest build --platform android --profile apk
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+En acabar (uns 10–20 min a la cua gratuïta) dona un enllaç i un QR per descarregar l'APK.
+Obre'l al mòbil i accepta «instal·lar apps d'origen desconegut». Per actualitzar-la,
+instal·la l'APK nou a sobre: **les dades es mantenen** (mateix `com.oriol.entrena`).
 
-## Learn more
+## Desenvolupament
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm run check          # typecheck + lint + tests
+npm test               # tests de src/lib (Vitest)
+npm run web            # versió web, només per a proves visuals
+npm run fetch-catalog  # torna a descarregar el catàleg d'ExerciseDB
+```
